@@ -21,6 +21,17 @@ namespace WebviewAlberto
         {
             InitializeComponent();
             Application.ApplicationExit += new EventHandler(OnApplicationExit);
+            this.Deactivate += AciertalaWeb_Deactivate;
+        }
+
+        private void AciertalaWeb_Deactivate(object sender, EventArgs e)
+        {
+            // Verifica si la aplicación debería cerrarse
+            if (!isClosing)
+            {
+                isClosing = true;
+                this.Close();  // Cierra la ventana
+            }
         }
 
         private async void AciertalaWeb_Load(object sender, EventArgs e)
@@ -462,8 +473,6 @@ namespace WebviewAlberto
                 }
             }
         }
-
-
 
     }
 }

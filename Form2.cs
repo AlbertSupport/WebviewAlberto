@@ -30,7 +30,9 @@ namespace WebviewAlberto
             this.StartPosition = FormStartPosition.Manual;
             this.TopMost = true;
             this.BackColor = Color.Black;
-            this.Size = new Size(182, 60);
+            this.TransparencyKey = Color.Black; // Hace que el color negro sea transparente.
+            this.Size = new Size(9, 60);
+          
             this.DoubleBuffered = true;
             this.MouseDown += Form2_MouseDown;
             this.KeyPreview = true;
@@ -38,9 +40,10 @@ namespace WebviewAlberto
             var workingArea = Screen.PrimaryScreen.WorkingArea;
 
 
-            int x = workingArea.X + 1400;
+            int x = workingArea.X + 1000;
             int y = workingArea.Y + 5;
             this.Location = new Point(x, y);
+
 
             GenerarInterfaz();
             GenerarBotones();
@@ -54,23 +57,24 @@ namespace WebviewAlberto
 
         }
 
+ 
         private void PosicionarArribaDerecha()
         {
             Rectangle wa = Screen.PrimaryScreen.WorkingArea;
             int screenWidth = wa.Width;
 
 
-            int offsetDerecha = 285;
+            int offsetDerecha = 480;
             int offsetArriba = 10;
 
 
-            if (screenWidth < 1280)
+            if (screenWidth <= 1280)
             {
                 offsetDerecha = 300;
             }
             if (screenWidth <= 1440)
             {
-                offsetDerecha = 280;
+                offsetDerecha = 405;
             }
 
             int x = wa.Right - this.Width - offsetDerecha;
@@ -104,7 +108,7 @@ namespace WebviewAlberto
 
             panelLateral = new Panel
             {
-                Width = 200,
+                Width = 175,
                 BackColor = ColorTranslator.FromHtml("#313439"),
                 Dock = DockStyle.Left,
                 Padding = new Padding(0)
@@ -114,7 +118,7 @@ namespace WebviewAlberto
 
             panelBotonesContainer = new Panel
             {
-                Width = 220,
+                Width = 0,
                 Height = 0,
                 Dock = DockStyle.Top,
                 Padding = new Padding(0),
@@ -150,9 +154,9 @@ namespace WebviewAlberto
                 TextImageRelation = TextImageRelation.ImageBeforeText,
                 Font = new Font("Segoe UI", 14, FontStyle.Bold),
                 ImageAlign = ContentAlignment.MiddleLeft,
-                Padding = new Padding(10, 0, 0, 0),
+                Padding = new Padding(0, 0, 0, 0),
                 FlatAppearance = { BorderSize = 0 },
-                Margin = new Padding(0, 0, 0, 5)
+                Margin = new Padding(0, 0, 0, 0)
             };
 
             if (File.Exists("icons/home.png"))
@@ -253,9 +257,9 @@ namespace WebviewAlberto
                         TextAlign = ContentAlignment.MiddleLeft,
                         TextImageRelation = TextImageRelation.ImageBeforeText,
                         ImageAlign = ContentAlignment.MiddleLeft,
-                        Padding = new Padding(20, 0, 0, 0),
+                        Padding = new Padding(5, 0, 0, 0),
                         Font = new Font("Segoe UI", 10, FontStyle.Bold),
-                        Margin = new Padding(0, 0, 0, 5),
+                        Margin = new Padding(0, 0, 0, 0),
                         FlatAppearance = { BorderSize = 2, BorderColor = Color.Blue }
                     };
 
@@ -283,9 +287,9 @@ namespace WebviewAlberto
                         TextAlign = ContentAlignment.MiddleLeft,
                         TextImageRelation = TextImageRelation.ImageBeforeText,
                         ImageAlign = ContentAlignment.MiddleLeft,
-                        Padding = new Padding(20, 0, 0, 0),
+                        Padding = new Padding(5, 0, 0, 0),
                         Font = new Font("Segoe UI", 10, FontStyle.Bold),
-                        Margin = new Padding(0, 0, 0, 5),
+                        Margin = new Padding(0, 0, 0, 0),
                         FlatAppearance = { BorderSize = 2, BorderColor = Color.Blue }
                     };
 
