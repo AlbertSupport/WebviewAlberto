@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
+using System.Reflection;
 using WebviewAlberto;
 
 public partial class PanelTransmisiones : Form
@@ -125,31 +126,38 @@ public partial class PanelTransmisiones : Form
             Font = new Font("Segoe UI", 12, FontStyle.Bold),
         };
 
-        // Ruta del icono en el directorio Resources
-        string iconPath = @"C:\Users\OPERACIONES-A\source\repos\AciertalaApp\Resources\TRANS.ico";  // Ruta completa
+        // Ruta de la imagen en el sistema local
+        string iconPath = "icons/tv.png";
 
-        // Verificar si el archivo existe en la ruta proporcionada
-        if (File.Exists(iconPath))
+        // Intentamos cargar el icono desde la ruta local
+        try
         {
-            // Cargar el icono desde la ruta
-            Icon transmisionIcon = new Icon(iconPath);
+            if (File.Exists(iconPath))
+            {
+                Image transmisionIcon = Image.FromFile(iconPath);
 
-            // Configurar el botón Transmisión 1
-            btnTransmision1.Image = transmisionIcon.ToBitmap(); // Convertir el icono en una imagen
-            btnTransmision1.ImageAlign = ContentAlignment.MiddleLeft; // Alineación de la imagen en el botón
-            btnTransmision1.TextAlign = ContentAlignment.MiddleRight; // Alineación del texto a la derecha del icono
-            btnTransmision1.Padding = new Padding(15, 0, 15, 0); // Ajusta el padding (espaciado) entre el icono y el texto
+                // Configurar el botón Transmisión 1
+                btnTransmision1.Image = transmisionIcon;
+                btnTransmision1.ImageAlign = ContentAlignment.MiddleLeft; // Alineación de la imagen en el botón
+                btnTransmision1.TextAlign = ContentAlignment.MiddleRight; // Alineación del texto a la derecha del icono
+                btnTransmision1.Padding = new Padding(15, 0, 15, 0); // Ajusta el padding (espaciado) entre el icono y el texto
 
-            // Configurar el botón Transmisión 3
-            btnTransmision3.Image = transmisionIcon.ToBitmap(); // Convertir el icono en una imagen
-            btnTransmision3.ImageAlign = ContentAlignment.MiddleLeft; // Alineación de la imagen en el botón
-            btnTransmision3.TextAlign = ContentAlignment.MiddleRight; // Alineación del texto a la derecha del icono
-            btnTransmision3.Padding = new Padding(15, 0, 15, 0); // Ajusta el padding (espaciado) entre el icono y el texto
+                // Configurar el botón Transmisión 3
+                btnTransmision3.Image = transmisionIcon;
+                btnTransmision3.ImageAlign = ContentAlignment.MiddleLeft; // Alineación de la imagen en el botón
+                btnTransmision3.TextAlign = ContentAlignment.MiddleRight; // Alineación del texto a la derecha del icono
+                btnTransmision3.Padding = new Padding(15, 0, 15, 0); // Ajusta el padding (espaciado) entre el icono y el texto
+            }
+            else
+            {
+                MessageBox.Show("No se encontró el archivo de imagen en la ruta especificada: " + iconPath);
+            }
         }
-        else
+        catch (Exception ex)
         {
-            MessageBox.Show("No se pudo encontrar el archivo: " + iconPath);
+            MessageBox.Show("Error al cargar el icono: " + ex.Message);
         }
+
 
         // Manejo de clic para el botón Transmisión 1
         btnTransmision1.Click += (s, args) =>
@@ -172,10 +180,6 @@ public partial class PanelTransmisiones : Form
         this.Controls.Add(btnTransmision1);  // Agregar Botón Transmisión 1
         this.Controls.Add(btnTransmision3);  // Agregar Botón Transmisión 3
     }
-
-
-
-
 
     private void PanelTransmisiones_Deactivate(object sender, EventArgs e)
     {

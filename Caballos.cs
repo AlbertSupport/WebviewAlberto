@@ -27,8 +27,18 @@ public partial class Caballos : Form
             {
                 browser.CoreWebView2.Navigate(url);
 
-                // Ajustar el factor de zoom en el control WebView2
-                browser.ZoomFactor = 1.0; // Escala al 100% (puedes cambiar este valor para ajustar el zoom)
+                // Obtener la resolución de la pantalla actual
+                int screenWidth = Screen.PrimaryScreen.Bounds.Width;
+
+                // Aplicar zoom si la resolución es menor a 1440px
+                if (screenWidth <= 1440)
+                {
+                    browser.ZoomFactor = 0.70; // Aumenta el zoom al 125%
+                }
+                else
+                {
+                    browser.ZoomFactor = 1.0; // Mantiene el 100% si la resolución es >= 1440px
+                }
             }
             else
             {
@@ -40,8 +50,6 @@ public partial class Caballos : Form
             MessageBox.Show($"Error al inicializar WebView2: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
-
-
 
     protected override void OnLoad(EventArgs e)
     {
@@ -61,5 +69,4 @@ public partial class Caballos : Form
     {
         this.Close(); // Cierra el formulario al quedar en segundo plano
     }
-
 }

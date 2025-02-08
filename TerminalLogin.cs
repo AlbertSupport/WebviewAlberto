@@ -17,7 +17,7 @@ using QRCoder;
 using ZXing;
 using ZXing.Common;
 
-namespace WebviewAlberto
+namespace AciertalaV3
 {
     public partial class TerminalLogin : Form
     {

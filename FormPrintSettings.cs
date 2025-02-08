@@ -2,9 +2,9 @@
 using System.Drawing.Printing;
 using System.IO;
 using System.Windows.Forms;
-using WebviewAlberto;
+using AciertalaV3;
 
-namespace WebviewAlberto
+namespace AciertalaV3
 {
     public partial class FormPrintSettings : Form
     {

@@ -14,9 +14,12 @@ namespace WebviewAlberto
 {
     public partial class Transmision3 : Form
     {
+        private bool isClosing = false;  // Declara la variable isClosing
+
         public Transmision3()
         {
             InitializeComponent();
+            this.Deactivate += Transmision3_Deactivate;
         }
 
         private async void Transmision3_Load(object sender, EventArgs e)
@@ -49,8 +52,6 @@ namespace WebviewAlberto
             }
         }
 
-
-
         private void ConfigureWebView2PopupBlocking()
         {
             browser.CoreWebView2.NewWindowRequested += HandleNewWindowRequested;
@@ -62,16 +63,14 @@ namespace WebviewAlberto
             {
                 string targetUri = e.Uri;
 
-                https://rojadirectaenhd.net/
+                // Eliminar la línea que parece estar fuera de lugar
                 if (targetUri.StartsWith("https://rojadirectaenhd.net/"))
                 {
-                    
                     e.Handled = true;
                     browser.CoreWebView2.Navigate(targetUri);
                 }
                 else
                 {
-                    
                     e.Handled = true;
                     Debug.WriteLine($"Ventana emergente bloqueada: {e.Uri}");
                 }
@@ -82,33 +81,32 @@ namespace WebviewAlberto
             }
         }
 
-
         private void OnNavigationCompleted(object sender, CoreWebView2NavigationCompletedEventArgs e)
         {
             try
             {
                 browser.CoreWebView2.ExecuteScriptAsync(@"
-                
-                document.querySelectorAll('header, footer').forEach(function(el) {
-                    el.style.display = 'none';
-                });
-                
-                var titleDiv = document.querySelector('.title');
-            if (titleDiv) {
-                titleDiv.style.display = 'none';
-            }
-
             
-            var shareButtons = document.querySelector('.sharethis-inline-share-buttons.st-center.st-lang-es.st-has-labels.st-inline-share-buttons.st-animated');
-            if (shareButtons) {
-                shareButtons.style.display = 'none';
+            document.querySelectorAll('header, footer').forEach(function(el) {
+                el.style.display = 'none';
+            });
+            
+            var titleDiv = document.querySelector('.title');
+        if (titleDiv) {
+            titleDiv.style.display = 'none';
+        }
+
+        
+        var shareButtons = document.querySelector('.sharethis-inline-share-buttons.st-center.st-lang-es.st-has-labels.st-inline-share-buttons.st-animated');
+        if (shareButtons) {
+            shareButtons.style.display = 'none';
+        }
+           
+            var button = document.getElementById('btnIframe');
+            if (button) {
+                button.style.display = 'none';
             }
-               
-                var button = document.getElementById('btnIframe');
-                if (button) {
-                    button.style.display = 'none';
-                }
-            ");
+        ");
             }
             catch (Exception ex)
             {
@@ -132,5 +130,16 @@ namespace WebviewAlberto
         {
             browser.CoreWebView2.Reload();
         }
+
+        private void Transmision3_Deactivate(object sender, EventArgs e)
+        {
+            // Verifica si la aplicación debería cerrarse
+            if (!isClosing)
+            {
+                isClosing = true;
+                this.Close();  // Cierra la ventana
+            }
+        }
     }
+
 }

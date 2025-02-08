@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.Web.WebView2.Core;
 
-namespace WebviewAlberto
+namespace AciertalaV3
 {
     public partial class WhatsappWeb : Form
     {

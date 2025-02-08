@@ -10,7 +10,7 @@ using Microsoft.Win32;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace WebviewAlberto
+namespace AciertalaV3
 {
     public partial class Form1 : Form
     {
@@ -57,7 +57,7 @@ namespace WebviewAlberto
             int offsetArriba = 10;
 
 
-            if (screenWidth < 1280)
+            if (screenWidth <= 1280)
             {
                 offsetDerecha = 300;
             }
@@ -191,106 +191,96 @@ namespace WebviewAlberto
 
         private void GenerarBotones()
         {
+            int screenWidth = Screen.PrimaryScreen.Bounds.Width;
+            int screenHeight = Screen.PrimaryScreen.Bounds.Height;
+
+            // Definir tamaños predeterminados
+            int buttonWidth = panelLateral.Width - 40;
+            int buttonHeight = 50;
+            int fontSize = 10;
+            int paddingLeft = 20;
+
+            // Ajustar panel para resolución 800x600
+            if (screenWidth <= 800 && screenHeight <= 600)
+            {
+                buttonWidth = 200; // Ancho fijo para pantallas pequeñas
+                buttonHeight = 35; // Reducir altura
+                fontSize = 8; // Reducir tamaño de fuente
+                paddingLeft = 10; // Reducir padding
+
+                // Ajustar el panel lateral para que se superponga a la barra de tareas
+                panelLateral.Width = buttonWidth + 40; // Ajustar el panel lateral
+                panelLateral.Location = new Point(screenWidth - panelLateral.Width, 0); // Mover el panel hacia la izquierda
+            }
+            // Ajustar para resolución 1280x600
+            else if (screenWidth <= 1280 && screenHeight <= 600)
+            {
+                buttonWidth = 250; // Ancho fijo para esta resolución
+                buttonHeight = 40; // Ajustar altura de los botones
+                fontSize = 9; // Tamaño de fuente ligeramente mayor
+                paddingLeft = 15; // Ajustar padding
+
+                // Ajustar el panel lateral para que se superponga a la barra de tareas
+                panelLateral.Width = buttonWidth + 40; // Ajustar el panel lateral
+                panelLateral.Location = new Point(screenWidth - panelLateral.Width, 0); // Mover el panel hacia la izquierda
+            }
+            // Ajustar para resoluciones mayores
+            else
+            {
+                panelLateral.Width = buttonWidth + 40; // Para resoluciones mayores
+                panelLateral.Location = new Point(screenWidth - panelLateral.Width, 0); // Mover el panel hacia la izquierda
+            }
+
             ButtonConfig[] buttonConfigs = new ButtonConfig[]
             {
-                new ButtonConfig("TERMINAL LOGIN", "icons/WEB.png", (s, e) => AbrirTerminalLogin()),
-                new ButtonConfig("CABALLOS", "icons/Caballos.png", (s, e) => AbrirCaballos()),
-                new ButtonConfig("JUEGOS VIRTUALES", "icons/Caballos.png", (s, e) => AbrirJuegosVirtuales()),
-                new ButtonConfig("RESULTADO EN VIVO", "icons/lives.png", (s, e) => AbrirResultadoEnVivo()),
-                new ButtonConfig("MARCADORES EN VIVO", "icons/scores.png", (s, e) => AbrirMarcadoresEnVivo()),
-                new ButtonConfig("ESTADISTICA", "icons/stats.png", (s, e) => AbrirEstadistica()),
-                new ButtonConfig("TRANSMISIÓN", "icons/stream.png", (s, e) => AbrirPanelTransmisiones()),
-                new ButtonConfig("CHROME", "icons/browser.png", (s, e) => AbrirChrome()),
-                new ButtonConfig("REGISTRO", "icons/register.png", (s, e) => AbrirRegistro()),
-                new ButtonConfig("REGISTRO QR", "icons/register.png", (s, e) => AbrirRegistroQR()),
-                new ButtonConfig("TIPOS DE APUESTAS", "icons/bets.png", (s, e) => AbrirTiposApuestas()),
-                new ButtonConfig("ACTUALIZAR", "icons/update.png", (s, e) => RestartAciertala()),
-                new ButtonConfig("CONEXIÓN REMOTA", "icons/remote.png", (s, e) => AbrirConexionRemota()),
-                new ButtonConfig("APAGAR / REINICIAR", "icons/power.png", (s, e) => AbrirApagarReiniciar())
+        new ButtonConfig("TERMINAL LOGIN", "icons/WEB.png", (s, e) => AbrirTerminalLogin()),
+        new ButtonConfig("CABALLOS", "icons/Caballos.png", (s, e) => AbrirCaballos()),
+        new ButtonConfig("JUEGOS VIRTUALES", "icons/Caballos.png", (s, e) => AbrirJuegosVirtuales()),
+        new ButtonConfig("RESULTADO EN VIVO", "icons/lives.png", (s, e) => AbrirResultadoEnVivo()),
+        new ButtonConfig("MARCADORES EN VIVO", "icons/scores.png", (s, e) => AbrirMarcadoresEnVivo()),
+        new ButtonConfig("ESTADISTICA", "icons/stats.png", (s, e) => AbrirEstadistica()),
+        new ButtonConfig("TRANSMISIÓN", "icons/stream.png", (s, e) => AbrirPanelTransmisiones()),
+        new ButtonConfig("CHROME", "icons/browser.png", (s, e) => AbrirChrome()),
+        new ButtonConfig("REGISTRO", "icons/register.png", (s, e) => AbrirPanelRegistro()),
+        new ButtonConfig("TIPOS DE APUESTAS", "icons/bets.png", (s, e) => AbrirTiposApuestas()),
+        new ButtonConfig("ACTUALIZAR", "icons/update.png", (s, e) => RestartAciertala()),
+        new ButtonConfig("CONEXIÓN REMOTA", "icons/remote.png", (s, e) => AbrirConexionRemota()),
+        new ButtonConfig("APAGAR / REINICIAR", "icons/power.png", (s, e) => AbrirApagarReiniciar())
             };
 
             foreach (var btnConfig in buttonConfigs)
             {
-                // Verificar el valor de BotonesVirtuales en el archivo JSON
-                string configFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "AciertalaApp", "config.json");
-                string botonesVirtualesStatus = "Desactivar"; // Valor por defecto
-
-                if (File.Exists(configFilePath))
+                Button btn = new Button
                 {
-                    try
-                    {
-                        string json = File.ReadAllText(configFilePath);
-                        var jsonObj = JObject.Parse(json);
-                        botonesVirtualesStatus = jsonObj["BotonesVirtuales"]?.ToString() ?? "Desactivar";
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show($"Error al leer el archivo de configuración: {ex.Message}");
-                    }
+                    Text = " " + btnConfig.Texto,
+                    Width = buttonWidth,
+                    Height = buttonHeight,
+                    BackColor = ColorTranslator.FromHtml("#313439"),
+                    ForeColor = Color.White,
+                    FlatStyle = FlatStyle.Flat,
+                    TextAlign = ContentAlignment.MiddleLeft,
+                    TextImageRelation = TextImageRelation.ImageBeforeText,
+                    ImageAlign = ContentAlignment.MiddleLeft,
+                    Padding = new Padding(paddingLeft, 0, 0, 0),
+                    Font = new Font("Segoe UI", fontSize, FontStyle.Bold),
+                    Margin = new Padding(0, 0, 0, 5),
+                    FlatAppearance = { BorderSize = 2, BorderColor = Color.Blue }
+                };
+
+                if (File.Exists(btnConfig.Icono))
+                {
+                    btn.Image = new Bitmap(btnConfig.Icono);
+                    btn.ImageAlign = ContentAlignment.MiddleLeft;
                 }
 
-                // Solo mostrar el botón "JUEGOS VIRTUALES" si "BotonesVirtuales" está en "Activar"
-                if (btnConfig.Texto == "JUEGOS VIRTUALES" && botonesVirtualesStatus == "Activar")
-                {
-                    Button btn = new Button
-                    {
-                        Text = " " + btnConfig.Texto,
-                        Width = panelLateral.Width - 40,
-                        Height = 50,
-                        BackColor = ColorTranslator.FromHtml("#313439"),
-                        ForeColor = Color.White,
-                        FlatStyle = FlatStyle.Flat,
-                        TextAlign = ContentAlignment.MiddleLeft,
-                        TextImageRelation = TextImageRelation.ImageBeforeText,
-                        ImageAlign = ContentAlignment.MiddleLeft,
-                        Padding = new Padding(20, 0, 0, 0),
-                        Font = new Font("Segoe UI", 10, FontStyle.Bold),
-                        Margin = new Padding(0, 0, 0, 5),
-                        FlatAppearance = { BorderSize = 2, BorderColor = Color.Blue }
-                    };
-
-                    if (File.Exists(btnConfig.Icono))
-                    {
-                        btn.Image = new Bitmap(btnConfig.Icono);
-                        btn.ImageAlign = ContentAlignment.MiddleLeft;
-                    }
-
-                    // Usar la función ConfigurarEventoClickBoton
-                    ConfigurarEventoClickBoton(btn, btnConfig);
-                    panelBotones.Controls.Add(btn);
-                }
-                else if (btnConfig.Texto != "JUEGOS VIRTUALES")
-                {
-                    // Agregar el resto de los botones (excepto "JUEGOS VIRTUALES")
-                    Button btn = new Button
-                    {
-                        Text = " " + btnConfig.Texto,
-                        Width = panelLateral.Width - 40,
-                        Height = 50,
-                        BackColor = ColorTranslator.FromHtml("#313439"),
-                        ForeColor = Color.White,
-                        FlatStyle = FlatStyle.Flat,
-                        TextAlign = ContentAlignment.MiddleLeft,
-                        TextImageRelation = TextImageRelation.ImageBeforeText,
-                        ImageAlign = ContentAlignment.MiddleLeft,
-                        Padding = new Padding(20, 0, 0, 0),
-                        Font = new Font("Segoe UI", 10, FontStyle.Bold),
-                        Margin = new Padding(0, 0, 0, 5),
-                        FlatAppearance = { BorderSize = 2, BorderColor = Color.Blue }
-                    };
-
-                    if (File.Exists(btnConfig.Icono))
-                    {
-                        btn.Image = new Bitmap(btnConfig.Icono);
-                        btn.ImageAlign = ContentAlignment.MiddleLeft;
-                    }
-
-                    // Usar la función ConfigurarEventoClickBoton
-                    ConfigurarEventoClickBoton(btn, btnConfig);
-                    panelBotones.Controls.Add(btn);
-                }
+                ConfigurarEventoClickBoton(btn, btnConfig);
+                panelBotones.Controls.Add(btn);
             }
         }
+
+
+
+
 
 
 
@@ -455,15 +445,9 @@ namespace WebviewAlberto
             form.Show();
         }
 
-        private void AbrirRegistro()
+        private void AbrirPanelRegistro()
         {
-            Registro form = new Registro();
-            form.Show();
-        }
-
-        private void AbrirRegistroQR()
-        {
-            RegistroQr form = new RegistroQr();
+            PanelRegistro form = new PanelRegistro();
             form.Show();
         }
 

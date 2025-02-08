@@ -9,7 +9,7 @@ using Microsoft.Web.WebView2.WinForms;
 using Microsoft.Web.WebView2.Wpf;
 using Newtonsoft.Json;
 
-namespace WebviewAlberto
+namespace AciertalaV3
 {
     public partial class Juegosvirtuales : Form
     {
@@ -240,6 +240,11 @@ namespace WebviewAlberto
                 Debug.WriteLine("❌ Error en GetCapturedPrintContentAsync(): " + ex.Message);
                 return string.Empty;
             }
+        }
+
+        private void JuegosVirtuales_Deactivate(object sender, EventArgs e)
+        {
+            this.Close(); // Cierra el formulario al quedar en segundo plano
         }
     }
 }

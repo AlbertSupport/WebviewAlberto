@@ -1,4 +1,6 @@
-﻿namespace WebviewAlberto
+﻿using System;
+
+namespace AciertalaV3
 {
     partial class Juegosvirtuales
     {
@@ -55,6 +57,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.webView2)).EndInit();
             this.ResumeLayout(false);
 
+            this.Deactivate += new EventHandler(this.JuegosVirtuales_Deactivate);
         }
 
         #endregion

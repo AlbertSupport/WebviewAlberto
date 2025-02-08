@@ -41,6 +41,5 @@ partial class Estadistica
         ((System.ComponentModel.ISupportInitialize)(this.browser)).EndInit();
         this.ResumeLayout(false);
 
-        this.Deactivate += new EventHandler(this.Caballos_Deactivate);
     }
 }

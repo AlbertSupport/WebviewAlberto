@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WebviewAlberto
+namespace AciertalaV3
 {
     partial class AdminGolden
     {

@@ -6,7 +6,7 @@ using System.Windows.Forms;
 using Microsoft.Web.WebView2.Core;
 using Newtonsoft.Json.Linq;
 
-namespace WebviewAlberto
+namespace AciertalaV3
 {
     public partial class AciertalaWeb : Form
     {

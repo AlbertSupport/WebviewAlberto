@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Drawing;
 
-namespace WebviewAlberto
+namespace AciertalaV3
 {
     internal class ButtonConfig
     {
