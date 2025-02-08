@@ -14,7 +14,7 @@ public partial class Caballos : Form
 
     private async void Caballos_Load(object sender, EventArgs e)
     {
-        try
+        try  
         {
             string userDataFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "aciertalaapp");
             var envOptions = new CoreWebView2EnvironmentOptions();
