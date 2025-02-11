@@ -250,31 +250,84 @@ namespace AciertalaV3
 
             foreach (var btnConfig in buttonConfigs)
             {
-                Button btn = new Button
-                {
-                    Text = " " + btnConfig.Texto,
-                    Width = buttonWidth,
-                    Height = buttonHeight,
-                    BackColor = ColorTranslator.FromHtml("#313439"),
-                    ForeColor = Color.White,
-                    FlatStyle = FlatStyle.Flat,
-                    TextAlign = ContentAlignment.MiddleLeft,
-                    TextImageRelation = TextImageRelation.ImageBeforeText,
-                    ImageAlign = ContentAlignment.MiddleLeft,
-                    Padding = new Padding(paddingLeft, 0, 0, 0),
-                    Font = new Font("Segoe UI", fontSize, FontStyle.Bold),
-                    Margin = new Padding(0, 0, 0, 5),
-                    FlatAppearance = { BorderSize = 2, BorderColor = Color.Blue }
-                };
+                // Verificar el valor de BotonesVirtuales en el archivo JSON
+                string configFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "AciertalaApp", "config.json");
+                string botonesVirtualesStatus = "Desactivar"; // Valor por defecto
 
-                if (File.Exists(btnConfig.Icono))
+                if (File.Exists(configFilePath))
                 {
-                    btn.Image = new Bitmap(btnConfig.Icono);
-                    btn.ImageAlign = ContentAlignment.MiddleLeft;
+                    try
+                    {
+                        string json = File.ReadAllText(configFilePath);
+                        var jsonObj = JObject.Parse(json);
+                        botonesVirtualesStatus = jsonObj["BotonesVirtuales"]?.ToString() ?? "Desactivar";
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Error al leer el archivo de configuración: {ex.Message}");
+                    }
                 }
 
-                ConfigurarEventoClickBoton(btn, btnConfig);
-                panelBotones.Controls.Add(btn);
+                // Solo mostrar el botón "JUEGOS VIRTUALES" si "BotonesVirtuales" está en "Activar"
+                if (btnConfig.Texto == "JUEGOS VIRTUALES" && botonesVirtualesStatus == "Activar")
+                {
+                    Button btn = new Button
+                    {
+                        Text = " " + btnConfig.Texto,
+                        Width = buttonWidth,
+                        Height = buttonHeight,
+                        BackColor = ColorTranslator.FromHtml("#313439"),
+                        ForeColor = Color.White,
+                        FlatStyle = FlatStyle.Flat,
+                        TextAlign = ContentAlignment.MiddleLeft,
+                        TextImageRelation = TextImageRelation.ImageBeforeText,
+                        ImageAlign = ContentAlignment.MiddleLeft,
+                        Padding = new Padding(paddingLeft, 0, 0, 0),
+                        Font = new Font("Segoe UI", fontSize, FontStyle.Bold),
+                        Margin = new Padding(0, 0, 0, 5),
+                        FlatAppearance = { BorderSize = 2, BorderColor = Color.Blue }
+                    };
+
+                    if (File.Exists(btnConfig.Icono))
+                    {
+                        btn.Image = new Bitmap(btnConfig.Icono);
+                        btn.ImageAlign = ContentAlignment.MiddleLeft;
+                    }
+
+                    // Usar la función ConfigurarEventoClickBoton
+                    ConfigurarEventoClickBoton(btn, btnConfig);
+                    panelBotones.Controls.Add(btn);
+                }
+                else if (btnConfig.Texto != "JUEGOS VIRTUALES")
+                {
+                    // Agregar el resto de los botones (excepto "JUEGOS VIRTUALES")
+                    Button btn = new Button
+                    {
+                        Text = " " + btnConfig.Texto,
+                        Width = panelLateral.Width - 40,
+                        Height = 50,
+                        BackColor = ColorTranslator.FromHtml("#313439"),
+                        ForeColor = Color.White,
+                        FlatStyle = FlatStyle.Flat,
+                        TextAlign = ContentAlignment.MiddleLeft,
+                        TextImageRelation = TextImageRelation.ImageBeforeText,
+                        ImageAlign = ContentAlignment.MiddleLeft,
+                        Padding = new Padding(5, 0, 0, 0),
+                        Font = new Font("Segoe UI", 10, FontStyle.Bold),
+                        Margin = new Padding(0, 0, 0, 0),
+                        FlatAppearance = { BorderSize = 2, BorderColor = Color.Blue }
+                    };
+
+                    if (File.Exists(btnConfig.Icono))
+                    {
+                        btn.Image = new Bitmap(btnConfig.Icono);
+                        btn.ImageAlign = ContentAlignment.MiddleLeft;
+                    }
+
+                    // Usar la función ConfigurarEventoClickBoton
+                    ConfigurarEventoClickBoton(btn, btnConfig);
+                    panelBotones.Controls.Add(btn);
+                }
             }
         }
 

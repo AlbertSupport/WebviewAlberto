@@ -22,6 +22,7 @@ namespace AciertalaV3
         private int alturaBotones = 0;
         private static ApagarReiniciar formApagarReiniciar = null;
         private static AciertalaWeb formaciertalaWeb = null;
+        private bool posicionActualizada = false;
 
         public Form2()
         {
@@ -57,16 +58,16 @@ namespace AciertalaV3
 
         }
 
- 
+
         private void PosicionarArribaDerecha()
         {
+            if (posicionActualizada) return; // Evita recálculos innecesarios
+
             Rectangle wa = Screen.PrimaryScreen.WorkingArea;
             int screenWidth = wa.Width;
 
-
             int offsetDerecha = 480;
             int offsetArriba = 10;
-
 
             if (screenWidth <= 1280)
             {
@@ -85,6 +86,7 @@ namespace AciertalaV3
             y = Math.Max(y, wa.Top);
 
             this.Location = new Point(x, y);
+            posicionActualizada = true; // Evita actualizaciones futuras innecesarias
         }
 
 
@@ -184,7 +186,7 @@ namespace AciertalaV3
             e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
 
             string textMain = "HOME";
-            string textVersion = " V1.0";
+            string textVersion = " V3.0";
 
             Font fontMain = new Font("Segoe UI", 14, FontStyle.Bold);
             Font fontVersion = new Font("Segoe UI", 7, FontStyle.Regular);

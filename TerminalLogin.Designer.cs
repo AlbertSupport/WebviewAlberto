@@ -59,7 +59,6 @@ namespace AciertalaV3
             this.Load += new System.EventHandler(this.TerminalLogin_Load);
             this.ResumeLayout(false);
 
-            this.Deactivate += new EventHandler(this.TerminalLogin_Deactivate);
         }
 
         #endregion

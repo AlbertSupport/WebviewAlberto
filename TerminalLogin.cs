@@ -31,6 +31,7 @@ namespace AciertalaV3
         public TerminalLogin()
         {
             InitializeComponent();
+            this.Deactivate += TerminalLogin_Deactivate;
         }
 
         private async void TerminalLogin_Load(object sender, EventArgs e)
@@ -175,40 +176,66 @@ namespace AciertalaV3
             {
 
                 string removeScript = @"
-            (function() {
-                function removeElements() {
-                    const selectorsToRemove = [
-                        'nvscore-dynamic-element.ng-tns-c151-4.ng-tns-c435-2.visibility-true.nvs-menu-item.ng-star-inserted',
-                        'nvscore-carousel.ng-star-inserted',
-                        'div.nvscore-carousel.multiple',
-                        'div.nvscore-carousel.full-width',
-                        'div#footer',
-                        'div.tawk-min-container',
-                        'iframe[src=""about:blank""][style*=""position:fixed""]',
-                        'div.login-img',
-                        'bs-modal-backdrop',
-                        'nvscore-editable-popup'
-                    ];
-                    // Eliminar solo los elementos innecesarios
-                    selectorsToRemove.forEach(selector => {
-                        document.querySelectorAll(selector).forEach(el => el.remove());
-                    });
-                    // Si existe `nvscore-editable-popup`, quitar solo la clase 'fade'
-                    document.querySelectorAll('nvscore-editable-popup').forEach(popup => {
-                        if (popup.classList.contains('fade')) {
-                            popup.classList.remove('fade');
-                            console.log('Se quitó la clase fade del popup.');
-                        }
-                    });
-                }
-                removeElements();
-                const observer = new MutationObserver(() => { removeElements(); });
-                observer.observe(document.body, { childList: true, subtree: true });
-                console.log('Observer activo: Eliminación de elementos y ajuste de clase fade.');
-            })();
-        ";
+(function() {
+    function removeElements() {
+        const selectorsToRemove = [
+            'nvscore-dynamic-element.ng-tns-c151-4.ng-tns-c435-2.visibility-true.nvs-menu-item.ng-star-inserted',
+            'nvscore-carousel.ng-star-inserted',
+            'div.nvscore-carousel.multiple',
+            'div.nvscore-carousel.full-width',
+            'div#footer',
+            'div.tawk-min-container',
+            'iframe[src=""about:blank""][style*=""position:fixed""]',
+            'div.login-img',
+            'bs-modal-backdrop',
+            'nvscore-editable-popup',
+            'a#Casino.ng-star-inserted',
+            'a#Live\\ Casino.ng-star-inserted',
+            'a#lotto.ng-star-inserted',
+            'div.popupSubWidget.xl.ng-star-inserted',
+            'div.categoriesSubWidget.xl.ng-star-inserted',
+            'div.providersSubWidget.xl.ng-star-inserted',
+            'div.game-filter.game-type-filter.dropdown-filter.ng-star-inserted', // Elementos de tipo dropdown
+            'div.game-filter.game-provider-filter.dropdown-filter.ng-star-inserted', // Otro dropdown
+            'nvscore-slide-toggle.game-filter.game-open-type-filter.ng-star-inserted', // Filtros adicionales
+            'div#footer', // Eliminar footer
+            'div.tawk-min-container', // Eliminar contenedor de chat
+            'iframe[src=""about:blank""][style*=""position:fixed""]' // Eliminar iframe específico
+        ];
+        
+        // Eliminar solo los elementos innecesarios
+        selectorsToRemove.forEach(selector => {
+            document.querySelectorAll(selector).forEach(el => el.remove());
+        });
+        
+        // Si existe `nvscore-editable-popup`, quitar solo la clase 'fade'
+        document.querySelectorAll('nvscore-editable-popup').forEach(popup => {
+            if (popup.classList.contains('fade')) {
+                popup.classList.remove('fade');
+                console.log('Se quitó la clase fade del popup.');
+            }
+        });
+    }
+
+    // Ejecutar la eliminación de elementos al cargar la página
+    removeElements();
+
+    // Configuración del observer para monitorear cambios dinámicos en el DOM
+    const observer = new MutationObserver(() => {
+        removeElements();
+    });
+
+    // Observar los cambios en el DOM
+    observer.observe(document.body, { childList: true, subtree: true });
+    console.log('Observer activo: Eliminación de elementos y ajuste de clase fade.');
+})();
+";
+
+                // Ejecutar el script en el navegador
                 await browser.CoreWebView2.ExecuteScriptAsync(removeScript);
                 Debug.WriteLine("[OnNavigationCompleted] removeScript ejecutado.");
+
+
 
 
                 string mutationObserverScript = @"
@@ -550,8 +577,8 @@ namespace AciertalaV3
 
                         // Definir fuentes
                         float fontNormalSize = Properties.Settings.Default.PaperSize == "58 mm" ? 7.0f : 10.0f;
-                        Font fontNormal = new Font("Arial", fontNormalSize, FontStyle.Regular);
-                        Font fontBold = new Font("Arial", fontNormalSize, FontStyle.Bold);
+                        Font fontNormal = new Font("Arial", fontNormalSize-1, FontStyle.Regular);
+                        Font fontBold = new Font("Arial", fontNormalSize-3, FontStyle.Bold);
                         Font fontBigBold = new Font(fontBold.FontFamily, fontBold.Size + 3, fontBold.Style);
 
                         // Dibujar logo si existe
@@ -560,8 +587,8 @@ namespace AciertalaV3
                         Rectangle logoRect = new Rectangle(marginLeft, y, logoWidth, logoHeight);
 
                         // Dibujar QR Code
-                        int qrSize = Properties.Settings.Default.PaperSize == "58 mm" ? 80 : 120;
-                        int spaceBetween = 10;
+                        int qrSize = Properties.Settings.Default.PaperSize == "58 mm" ? 80 : 100;
+                        int spaceBetween = 8;
                         Rectangle qrRect = new Rectangle(marginLeft + logoWidth + spaceBetween, y, qrSize, qrSize);
 
                         int rowHeight = 0;
@@ -634,7 +661,7 @@ namespace AciertalaV3
                         sections.Add(cuponText);
 
                         // Definir fuentes para las secciones
-                        Font fontBox = new Font(fontBold.FontFamily, fontBold.Size + 4, fontBold.Style);
+                        Font fontBox = new Font(fontBold.FontFamily, fontBold.Size , fontBold.Style);
 
                         // Configuración del cuadro grande
                         int boxMargin = 10;
@@ -776,9 +803,7 @@ namespace AciertalaV3
                         g.DrawString($"Ganancias: {maxWin} {currencyCode}", fontBold, Brushes.Black, marginLeft, y);
                         y += (int)(fontBold.Size * 2.5f);
 
-                        // Última línea divisoria
-                        g.DrawLine(dashPen, marginLeft, y, pageWidthCalc - marginLeft, y);
-                        y += (int)(fontBold.Size * 2.0f);
+                 
 
 
                         string createdTimeFinal = "No disponible";
@@ -820,9 +845,7 @@ namespace AciertalaV3
                         y += infoBoxHeightFinal + 10;
 
 
-                        // Dibujar la línea divisoria después del cuadro
-                        g.DrawLine(dashPen, marginLeft, y, pageWidthCalc - marginLeft, y);
-                        y += (int)(fontBold.Size * 2.0f);
+                   
 
                         string rawPrintId = ticketData["print_id"]?.ToString();
 
@@ -870,8 +893,8 @@ namespace AciertalaV3
                             y += matrixBarcode.Height + 10;
                         }
                         string line1 = "Acepto los términos y condiciones";
-                        string line2 = "ec.aciertala.com";
-                        string line4 = "Visítanos en:";
+                        string line2 = "Visítanos en: ec.aciertala.com";
+                        string line4 = "";
 
                         Font fontCentered = new Font("Arial", fontNormalSize, FontStyle.Regular);
 
@@ -881,12 +904,12 @@ namespace AciertalaV3
 
                         float xLine1 = (pageWidthCalc - sizeLine1.Width) / 2 + marginLeft;
                         float xLine2 = (pageWidthCalc - sizeLine2.Width) / 2 + marginLeft;
-                        float xLine4 = (pageWidthCalc - sizeLine4.Width) / 2 + marginLeft;
+                        //float xLine4 = (pageWidthCalc - sizeLine4.Width) / 2 + marginLeft;
 
                         g.DrawString(line1, fontCentered, Brushes.Black, xLine1, y);
                         y += (int)(fontCentered.Size * 1.5f);
-                        g.DrawString(line4, fontCentered, Brushes.Black, xLine4, y);
-                        y += (int)(fontCentered.Size * 2.0f);
+                        //g.DrawString(line4, fontCentered, Brushes.Black, xLine4, y);
+                        //y += (int)(fontCentered.Size * 2.0f);
                         g.DrawString(line2, fontCentered, Brushes.Black, xLine2, y);
                         y += (int)(fontCentered.Size * 2.5f);
                     };
@@ -900,42 +923,7 @@ namespace AciertalaV3
             });
         }
 
-        private void DrawBox(Graphics g, string text, Font font, int marginLeft, int y, int pageWidth, string tipoImpresora)
-        {
-            int boxWidth = pageWidth - (2 * marginLeft);
-            SizeF textSize = g.MeasureString(text, font);
-
-            if (tipoImpresora == "58 mm")
-
-            {
-                Pen dashPen = new Pen(Color.Black, 1);
-                dashPen.DashPattern = new float[] { 2, 2 };
-
-                int topY = y;
-                int bottomY = y + (int)textSize.Height + 10;
-                int leftX = marginLeft;
-                int rightX = leftX + boxWidth;
-
-                g.DrawLine(dashPen, leftX, topY, rightX, topY);
-                g.DrawLine(dashPen, leftX, topY, leftX, bottomY);
-                g.DrawLine(dashPen, rightX, topY, rightX, bottomY);
-                g.DrawLine(dashPen, leftX, bottomY, rightX, bottomY);
-
-                float textX = leftX + (boxWidth - textSize.Width) / 2;
-                float textY = topY + ((bottomY - topY - textSize.Height) / 2);
-                g.DrawString(text, font, Brushes.Black, textX, textY);
-            }
-            else
-            {
-                int rectX = marginLeft;
-                int rectY = y;
-                int rectWidth = boxWidth;
-                int rectHeight = (int)textSize.Height + 15;
-
-                g.FillRectangle(Brushes.Black, rectX, rectY, rectWidth, rectHeight);
-                g.DrawString(text, font, Brushes.White, rectX + (rectWidth - textSize.Width) / 2, rectY + 5);
-            }
-        }
+       
 
         private List<string> WrapText(string input, int maxWidth, Font font, Graphics g)
         {
@@ -972,7 +960,7 @@ namespace AciertalaV3
 
         private void TerminalLogin_Deactivate(object sender, EventArgs e)
         {
-            this.Close(); // Cierra el formulario al quedar en segundo plano
+            this.Close();
         }
 
     }
