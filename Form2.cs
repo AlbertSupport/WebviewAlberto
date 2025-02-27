@@ -31,7 +31,7 @@ namespace AciertalaV3
             this.StartPosition = FormStartPosition.Manual;
             this.TopMost = true;
             this.BackColor = Color.Black;
-            this.TransparencyKey = Color.Black; // Hace que el color negro sea transparente.
+            this.TransparencyKey = Color.Black; 
             this.Size = new Size(9, 60);
           
             this.DoubleBuffered = true;

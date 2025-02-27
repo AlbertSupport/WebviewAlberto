@@ -52,45 +52,44 @@ public partial class TiposApuestas : Form
         {
             try
             {
-                // Script para ocultar los divs con id 'u_row_5', 'u_row_11', 'u_column_4' y 'st-2'
+                // Script para eliminar el banner de cookies con la clase "cc_banner cc_container cc_container--open"
+                // y otros elementos que quieras ocultar/eliminar.
                 string script = @"
                 (function() {
                     var result = '';
 
-                    // Ocultar el elemento con id 'u_row_5'
+                    // Ejemplo para eliminar por clase:
+                    var cookieBanner = document.querySelector('.cc_banner.cc_container.cc_container--open');
+                    if (cookieBanner) {
+                        cookieBanner.parentNode.removeChild(cookieBanner);
+                        result += 'Cookie banner eliminado. ';
+                    } else {
+                        result += 'Cookie banner no encontrado. ';
+                    }
+
+                    // (Opcional) Ocultar/Eliminar otros elementos que ya tenías:
                     var row5 = document.getElementById('u_row_5');
                     if (row5) {
                         row5.style.display = 'none';
-                        result += 'El elemento u_row_5 se ha ocultado correctamente. ';
-                    } else {
-                        result += 'El elemento u_row_5 no fue encontrado. ';
+                        result += 'Oculto u_row_5. ';
                     }
 
-                    // Ocultar el elemento con id 'u_row_11'
                     var row11 = document.getElementById('u_row_11');
                     if (row11) {
                         row11.style.display = 'none';
-                        result += 'El elemento u_row_11 se ha ocultado correctamente. ';
-                    } else {
-                        result += 'El elemento u_row_11 no fue encontrado. ';
+                        result += 'Oculto u_row_11. ';
                     }
 
-                    // Ocultar el elemento con id 'u_column_4'
                     var column4 = document.getElementById('u_column_4');
                     if (column4) {
                         column4.style.display = 'none';
-                        result += 'El elemento u_column_4 se ha ocultado correctamente. ';
-                    } else {
-                        result += 'El elemento u_column_4 no fue encontrado. ';
+                        result += 'Oculto u_column_4. ';
                     }
 
-                    // Ocultar el elemento con id 'st-2'
                     var st2 = document.getElementById('st-2');
                     if (st2) {
                         st2.style.display = 'none';
-                        result += 'El elemento st-2 se ha ocultado correctamente.';
-                    } else {
-                        result += 'El elemento st-2 no fue encontrado.';
+                        result += 'Oculto st-2. ';
                     }
 
                     return result;
@@ -99,7 +98,8 @@ public partial class TiposApuestas : Form
 
                 // Ejecutar el script en la página
                 string result = await browser.CoreWebView2.ExecuteScriptAsync(script);
-
+                // Opcional: si quieres ver en un MessageBox lo que devolvió
+                // MessageBox.Show(result);
             }
             catch (Exception ex)
             {
@@ -112,10 +112,25 @@ public partial class TiposApuestas : Form
         }
     }
 
-    private void Tiposapuesta_Deactivate(object sender, EventArgs e)
+
+    protected override void OnLoad(EventArgs e)
     {
-        this.Close(); // Cierra el formulario al quedar en segundo plano
+        base.OnLoad(e);
+
+
+        var currentScreen = Screen.FromPoint(Cursor.Position);
+        int screenWidth = currentScreen.Bounds.Width;
+        int fixedHeight = 1000;
+
+
+        this.ClientSize = new Size(screenWidth, fixedHeight);
+        this.Location = new Point(currentScreen.Bounds.X, currentScreen.Bounds.Y + 80);
     }
+
+    //private void Tiposapuesta_Deactivate(object sender, EventArgs e)
+    //{
+    //    this.Close(); 
+    //}
 
 
 }

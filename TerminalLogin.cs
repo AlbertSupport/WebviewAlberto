@@ -55,7 +55,7 @@ namespace AciertalaV3
                 await InjectInterceptionScriptAsync();
                 await InjectInterceptionScriptForSave2Async();
 
-                string url = "https://www.pe.aciertala.com/sport";
+                string url = "https://www.pe.aciertala.com/live/event-view?sportId=1";
                 if (Uri.IsWellFormedUriString(url, UriKind.Absolute))
                 {
                     browser.CoreWebView2.Navigate(url);

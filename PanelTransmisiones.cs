@@ -114,17 +114,17 @@ public partial class PanelTransmisiones : Form
         };
 
         // Botón Transmisión 3
-        Button btnTransmision3 = new Button()
-        {
-            Text = "TRANSMISION 3",
-            Width = buttonWidth,
-            Height = buttonHeight,
-            Left = startX,
-            Top = startY + buttonHeight + spacing,  // Espaciado entre botones
-            BackColor = Color.White,
-            ForeColor = ColorTranslator.FromHtml("#1A24B1"),
-            Font = new Font("Segoe UI", 12, FontStyle.Bold),
-        };
+        //Button btnTransmision3 = new Button()
+        //{
+        //    Text = "TRANSMISION 3",
+        //    Width = buttonWidth,
+        //    Height = buttonHeight,
+        //    Left = startX,
+        //    Top = startY + buttonHeight + spacing,  // Espaciado entre botones
+        //    BackColor = Color.White,
+        //    ForeColor = ColorTranslator.FromHtml("#1A24B1"),
+        //    Font = new Font("Segoe UI", 12, FontStyle.Bold),
+        //};
 
         // Ruta de la imagen en el sistema local
         string iconPath = "icons/tv.png";
@@ -142,11 +142,11 @@ public partial class PanelTransmisiones : Form
                 btnTransmision1.TextAlign = ContentAlignment.MiddleRight; // Alineación del texto a la derecha del icono
                 btnTransmision1.Padding = new Padding(15, 0, 15, 0); // Ajusta el padding (espaciado) entre el icono y el texto
 
-                // Configurar el botón Transmisión 3
-                btnTransmision3.Image = transmisionIcon;
-                btnTransmision3.ImageAlign = ContentAlignment.MiddleLeft; // Alineación de la imagen en el botón
-                btnTransmision3.TextAlign = ContentAlignment.MiddleRight; // Alineación del texto a la derecha del icono
-                btnTransmision3.Padding = new Padding(15, 0, 15, 0); // Ajusta el padding (espaciado) entre el icono y el texto
+                //// Configurar el botón Transmisión 3
+                //btnTransmision3.Image = transmisionIcon;
+                //btnTransmision3.ImageAlign = ContentAlignment.MiddleLeft; // Alineación de la imagen en el botón
+                //btnTransmision3.TextAlign = ContentAlignment.MiddleRight; // Alineación del texto a la derecha del icono
+                //btnTransmision3.Padding = new Padding(15, 0, 15, 0); // Ajusta el padding (espaciado) entre el icono y el texto
             }
             else
             {
@@ -168,17 +168,17 @@ public partial class PanelTransmisiones : Form
         };
 
         // Manejo de clic para el botón Transmisión 3
-        btnTransmision3.Click += (s, args) =>
-        {
-            MessageBox.Show("Botón Transmisión 3 presionado");
-            Transmision3 transmision3Form = new Transmision3();
-            transmision3Form.Show();
-        };
+        //btnTransmision3.Click += (s, args) =>
+        //{
+        //    MessageBox.Show("Botón Transmisión 3 presionado");
+        //    Transmision3 transmision3Form = new Transmision3();
+        //    transmision3Form.Show();
+        //};
 
-        // Agregar el título y los botones al formulario
+        //// Agregar el título y los botones al formulario
         this.Controls.Add(lblTitulo);  // Agregar el título
         this.Controls.Add(btnTransmision1);  // Agregar Botón Transmisión 1
-        this.Controls.Add(btnTransmision3);  // Agregar Botón Transmisión 3
+        //this.Controls.Add(btnTransmision3);  // Agregar Botón Transmisión 3
     }
 
     private void PanelTransmisiones_Deactivate(object sender, EventArgs e)

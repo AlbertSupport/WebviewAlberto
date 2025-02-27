@@ -51,7 +51,7 @@ partial class TiposApuestas : Form
         // Manejo de cierre con Escape
         this.KeyDown += TiposApuesta_KeyDown;
 
-        this.Deactivate += new EventHandler(this.Tiposapuesta_Deactivate);
+        //this.Deactivate += new EventHandler(this.Tiposapuesta_Deactivate);
     }
 
     private void TiposApuesta_KeyDown(object sender, KeyEventArgs e)

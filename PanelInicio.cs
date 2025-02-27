@@ -8,9 +8,18 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using AciertalaV3;
+using System.Drawing;
 
 public partial class PanelInicio : Form
 {
+    // Flags para controlar los bucles de re-apertura
+    private bool loopForm1Activo = true;
+    private bool loopForm2Activo = true;
+
+    // NotifyIcon y menú contextual
+    private NotifyIcon notifyIcon;
+    private ContextMenuStrip contextMenu;
+
     private AppSettings settings;
     private Label lblEstado;
     private ProgressBar progressBarDescarga;
@@ -19,6 +28,7 @@ public partial class PanelInicio : Form
     {
         InitializeComponent();
         ConfigurarInterfaz();
+        ConfigurarNotifyIcon();
     }
 
     private void ConfigurarInterfaz()
@@ -72,6 +82,45 @@ public partial class PanelInicio : Form
 
         this.Show();
     }
+
+    private void ConfigurarNotifyIcon()
+    {
+        
+        contextMenu = new ContextMenuStrip();
+        ToolStripMenuItem itemCerrar = new ToolStripMenuItem("Cerrar");
+        itemCerrar.Click += ItemCerrar_Click; 
+        contextMenu.Items.Add(itemCerrar);
+
+        
+        notifyIcon = new NotifyIcon();
+        notifyIcon.Icon = System.Drawing.SystemIcons.Application; 
+        notifyIcon.ContextMenuStrip = contextMenu;
+        notifyIcon.Icon = new Icon("icons/AciertalaIcon.ico");
+        notifyIcon.Visible = true;
+        notifyIcon.Text = "AciertalaV3"; 
+    }
+
+    private void ItemCerrar_Click(object sender, EventArgs e)
+    {
+        
+        loopForm1Activo = false;
+        loopForm2Activo = false;
+
+       
+        var formsToClose = Application.OpenForms.Cast<Form>()
+                               .Where(f => f is Form1 || f is Form2)
+                               .ToList();
+        foreach (var form in formsToClose)
+        {
+            form.Close();
+        }
+
+        
+        notifyIcon.Visible = false;
+        notifyIcon.Dispose();
+    }
+
+
 
     private async Task DescargarYDescomprimirBotonesAciertala()
     {
@@ -238,9 +287,19 @@ public partial class PanelInicio : Form
             {
                 lblEstado.Text = "Aplicación ejecutada con éxito.";
                 this.Hide();
-                Form formulario = new Form1();
-                formulario.ShowDialog();
-                this.Close();
+                loopForm1Activo = true;
+
+                
+                while (loopForm1Activo)
+                {
+                    using (Form formulario = new Form1())
+                    {
+                        formulario.ShowDialog();
+                    }
+                }
+
+                
+                this.Invoke((Action)(() => this.Close()));
             }));
         }
         catch (Exception ex)
@@ -330,9 +389,18 @@ public partial class PanelInicio : Form
                 this.Invoke((Action)(() =>
                 {
                     this.Hide();
-                    Form formularioCajero = new Form2();
-                    formularioCajero.ShowDialog();
-                    this.Close();
+
+                    loopForm2Activo = true;
+
+                    while (loopForm2Activo)
+                    {
+                        using (Form formularioCajero = new Form2())
+                        {
+                            formularioCajero.ShowDialog();
+                        }
+                    }
+
+                    this.Invoke((Action)(() => this.Close()));
                 }));
             }
             catch (Exception ex)
